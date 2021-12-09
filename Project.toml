@@ -2,3 +2,7 @@ name = "Nanopass"
 uuid = "c3c267e3-0ca1-4b9d-ae1b-3ff1d0990924"
 authors = ["Lîm Tsú-thuàn <dannypsnl@gmail.com>"]
 version = "0.1.0"
+
+[deps]
+Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
