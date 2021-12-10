@@ -5,21 +5,30 @@ using MacroTools
 
 macro language(language_name::Symbol, block::Expr)
   block = rmlines(block)
+  exports = @pipe block.args |> map(expr -> begin
+                      entryName = expr.args[1]
+                      productNames = map(expr -> begin
+                          @assert @capture(expr, T_Symbol(fields__))
+                          T
+                        end, expr.args[2:end])
+                      pushfirst!(productNames, entryName)
+                    end, _) |> Iterators.flatten
   ss =
     @pipe block.args |>
           map(expr -> begin
               entryName = expr.args[1]
-              sss = map(expr -> begin
+              products = map(expr -> begin
                   @assert @capture(expr, T_Symbol(fields__))
                   :(struct $(T) <: $(entryName)
                     $(fields...)
                   end)
                 end, expr.args[2:end])
-              pushfirst!(sss, :(abstract type $(entryName) end))
+              pushfirst!(products, :(abstract type $(entryName) end))
             end, _) |>
           Iterators.flatten
   quote
     @eval module $language_name
+    export $(exports...)
     $(ss...)
     end
   end
@@ -41,10 +50,13 @@ end
   ]
 end
 
+using .L0
 @show L0
-@show L0.Exp
-@show L0.Stmt
-@show L0.Prog
-@show L0.Var(:a)
+@show Exp
+@show Stmt
+@show P <: Prog
+@show P([])
+@show Var(:a)
+@show Var(:a)
 
 end # module
