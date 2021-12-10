@@ -35,7 +35,7 @@ macro language(language_name::Symbol, block::Expr)
 end
 
 @language L0 begin
-  Exp[
+  Expr[
     Var(x::Symbol)
     Begin(es::Array{Expr}, e::Expr)
     If(test::Expr, body::Expr, body2::Expr)
@@ -52,11 +52,11 @@ end
 
 using .L0
 @show L0
-@show Exp
+@show Expr
 @show Stmt
 @show P <: Prog
 @show P([])
 @show Var(:a)
-@show Var(:a)
+@show Lambda([:a], [Var(:a)])
 
 end # module
