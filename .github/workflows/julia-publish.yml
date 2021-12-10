@@ -26,8 +26,8 @@ jobs:
             Pkg.instantiate()'
       - run: |
           julia --project=docs -e '
-            using Documenter: doctest; using MYPACKAGE
-            doctest(MYPACKAGE)' # change MYPACKAGE to the name of your package
+            using Documenter: doctest; using Nanopass
+            doctest(Nanopass)'
       - run: julia --project=docs docs/make.jl
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
