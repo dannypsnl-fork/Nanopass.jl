@@ -13,21 +13,15 @@ macro language(language_name::Symbol, block::Expr)
                         end, expr.args[2:end])
                       pushfirst!(productNames, entryName)
                     end, _) |> Iterators.flatten
-  ss =
-    @pipe block.args |>
-          map(expr -> begin
-              entryName = expr.args[1]
-              products = map(expr -> begin
-                  @assert @capture(expr, T_Symbol(fields__))
-                  :(struct $(T) <: $(entryName)
-                    $(fields...)
-                  end)
-                end, expr.args[2:end])
-              pushfirst!(products, :(abstract type $(entryName) end))
-            end, _) |>
-          Iterators.flatten
+  ss = @pipe block.args |>
+             map(expr -> begin
+      :(@data $(expr.args[1]) begin
+        $(expr.args[2:end]...)
+      end)
+    end, _)
   quote
     @eval module $language_name
+    using MLStyle
     export $(exports...)
     $(ss...)
     end
