@@ -34,29 +34,6 @@ macro language(language_name::Symbol, block::Expr)
   end
 end
 
-@language L0 begin
-  Expr[
-    Var(x::Symbol)
-    Begin(es::Array{Expr}, e::Expr)
-    If(test::Expr, body::Expr, body2::Expr)
-    Lambda(vs::Array{Symbol}, body::Array{Expr})
-    App(e::Expr, es::Array{Expr})
-  ]
-  Stmt[
-    Define(v::Symbol, e::Expr)
-  ]
-  Prog[
-    P(s::Array{Stmt})
-  ]
-end
-
-using .L0
-@show L0
-@show Expr
-@show Stmt
-@show P <: Prog
-@show P([])
-@show Var(:a)
-@show Lambda([:a], [Var(:a)])
+export @language
 
 end # module
